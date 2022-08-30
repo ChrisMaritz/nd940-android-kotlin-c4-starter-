@@ -105,11 +105,10 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
         }
 
         // Add a marker in Sydney and move the camera
-        val latitude = -34.117506
-        val longitude = 18.919340
+        val latitude = -33.92277163500521
+        val longitude = 18.41862016946781
         val zoomLevel = 18f
         val overlaySize = 100f
-
         val homeLatLng = LatLng(latitude, longitude)
 
         val markerOptions = MarkerOptions()

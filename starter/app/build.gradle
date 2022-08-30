@@ -62,6 +62,7 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:$recyclerViewVersion"
     implementation "androidx.constraintlayout:constraintlayout:$constraintVersion"
 
+
     implementation 'com.google.code.gson:gson:2.8.5'
 
     // Architecture Components
