@@ -3,7 +3,11 @@ package com.udacity.project4.locationreminders.reminderslist
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
+import androidx.core.view.children
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
@@ -22,10 +26,14 @@ class ReminderListFragment : BaseFragment() {
     //use Koin to retrieve the ViewModel instance
     override val _viewModel: RemindersListViewModel by viewModel()
     private lateinit var binding: FragmentRemindersBinding
+    var loginText = ""
+    private lateinit var menu : Menu
     val signInIntent = AuthUI.getInstance()
         .createSignInIntentBuilder()
         // ... options ...
         .build();
+    val signOutIntent = AuthUI.getInstance()
+
 
     val singInLauncher = registerForActivityResult(
         FirebaseAuthUIActivityResultContract()
@@ -37,6 +45,12 @@ class ReminderListFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        if(auth.currentUser == null){
+            singInLauncher.launch(signInIntent)
+        }else{
+
+        }
         binding =
             DataBindingUtil.inflate(
                 inflater,
@@ -47,6 +61,7 @@ class ReminderListFragment : BaseFragment() {
         setHasOptionsMenu(true)
         setDisplayHomeAsUpEnabled(false)
         setTitle(getString(R.string.app_name))
+
 
         binding.refreshLayout.setOnRefreshListener { _viewModel.loadReminders() }
 
@@ -88,12 +103,12 @@ class ReminderListFragment : BaseFragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+
         when (item.itemId) {
             R.id.logout -> {
-                if(auth.currentUser == null){
-                    item.setTitle("Log in")
-                    singInLauncher.launch(signInIntent)
-                }
+                    signOutIntent.signOut(requireContext())
+                    Toast.makeText(requireContext(), "Logged out", Toast.LENGTH_LONG).show()
                 true
             }
         }
@@ -104,6 +119,10 @@ class ReminderListFragment : BaseFragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.main_menu, menu)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
     }
 
     companion object {
