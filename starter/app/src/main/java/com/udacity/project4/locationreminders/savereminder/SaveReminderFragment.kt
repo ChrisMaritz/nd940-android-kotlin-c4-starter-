@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,11 +42,10 @@ class SaveReminderFragment : BaseFragment() {
     ): View? {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_save_reminder, container, false)
-
         setDisplayHomeAsUpEnabled(true)
         binding.viewModel = _viewModel
         binding.reminderDescription
-
+        geofencingClient = LocationServices.getGeofencingClient(requireContext())
         return binding.root
     }
 
@@ -101,7 +101,29 @@ class SaveReminderFragment : BaseFragment() {
                 intent.action = ACTION_GEOFENCE_EVENT
                 PendingIntent.getBroadcast(requireContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
             }
-            geofencingClient?.addGeofences(getGeofencingRequest(geofenceList), geofencePendingIntent )
+            val geofence = Geofence.Builder()
+                .setRequestId(location)
+                .setCircularRegion(latitude!!,
+                    longitude!!,
+                    20.00f)
+                .setExpirationDuration(Geofence.NEVER_EXPIRE)
+                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
+                .build()
+
+            val geofencingRequest = GeofencingRequest.Builder()
+                .setInitialTrigger(Geofence.GEOFENCE_TRANSITION_ENTER)
+                .addGeofence(geofence)
+                .build()
+            geofencingClient?.addGeofences(geofencingRequest, geofencePendingIntent)
+                ?.run {
+                    addOnSuccessListener {
+                        Log.d("geo: ", "Success")
+                    }
+                    addOnFailureListener {
+                        Log.e("geo", it.message!!)
+                        Log.e("geo", "Error trying to save a geofence for: ")
+                    }
+                }
             val localDb = LocalDB
             val dao = localDb.createRemindersDao(requireContext())
             val dispatcher = Dispatchers.IO
