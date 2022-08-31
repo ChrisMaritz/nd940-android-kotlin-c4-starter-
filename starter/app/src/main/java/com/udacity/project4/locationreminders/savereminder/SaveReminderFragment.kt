@@ -45,7 +45,6 @@ class SaveReminderFragment : BaseFragment() {
         setDisplayHomeAsUpEnabled(true)
         binding.viewModel = _viewModel
         binding.reminderDescription
-        geofencingClient = LocationServices.getGeofencingClient(requireContext())
         return binding.root
     }
 
@@ -58,6 +57,7 @@ class SaveReminderFragment : BaseFragment() {
             _viewModel.navigationCommand.value =
                 NavigationCommand.To(SaveReminderFragmentDirections.actionSaveReminderFragmentToSelectLocationFragment())
         }
+        geofencingClient = LocationServices.getGeofencingClient(requireContext())
 
         binding.saveReminder.setOnClickListener {
             _viewModel.reminderTitle.value = binding.reminderTitle.text.toString()
@@ -121,7 +121,7 @@ class SaveReminderFragment : BaseFragment() {
                     }
                     addOnFailureListener {
                         Log.e("geo", it.message!!)
-                        Log.e("geo", "Error trying to save a geofence for: ")
+                        Log.e("geo", "Error saving geofence")
                     }
                 }
             val localDb = LocalDB
