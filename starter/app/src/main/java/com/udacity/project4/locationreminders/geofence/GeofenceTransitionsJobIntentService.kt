@@ -41,19 +41,19 @@ class GeofenceTransitionsJobIntentService : JobIntentService(), CoroutineScope {
         //TODO: handle the geofencing transition events and
         // send a notification to the user when he enters the geofence area
         if(event.geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER){
-            if(event.triggeringGeofences.isEmpty() != true){
-                sendNotification(event.triggeringGeofences)
-            }else{
-                Log.i("Error", "Hi there")
-                return
+            val id = when{
+                !event.triggeringGeofences.isEmpty() -> event.triggeringGeofences[0].requestId
+                else -> {Log.i("Trigger", "error")
+                    return}
             }
+            sendNotification(id)
         }
         //TODO call @sendNotification
     }
 
     //TODO: get the request id of the current geofence
-    private fun sendNotification(triggeringGeofences: List<Geofence>) {
-        var requestId = triggeringGeofences[0].requestId
+    private fun sendNotification(id : String) {
+        var requestId = id
 
         //Get the local repository instance
         val remindersLocalRepository: ReminderDataSource by inject()
@@ -74,6 +74,8 @@ class GeofenceTransitionsJobIntentService : JobIntentService(), CoroutineScope {
                         reminderDTO.id
                     )
                 )
+            }else{
+                Log.i("GetReminder", "Error")
             }
         }
     }

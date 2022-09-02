@@ -23,6 +23,8 @@ import com.udacity.project4.locationreminders.data.local.LocalDB
 import com.udacity.project4.locationreminders.data.local.RemindersDao
 import com.udacity.project4.locationreminders.data.local.RemindersLocalRepository
 import com.udacity.project4.locationreminders.geofence.GeofenceBroadcastReceiver
+import com.udacity.project4.locationreminders.reminderslist.ReminderDataItem
+import com.udacity.project4.utils.sendNotification
 import com.udacity.project4.utils.setDisplayHomeAsUpEnabled
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -135,6 +137,14 @@ class SaveReminderFragment : BaseFragment() {
                 longitude)
             val remindersLocalRepository = RemindersLocalRepository(dao,dispatcher)
             CoroutineScope(Dispatchers.IO).launch {remindersLocalRepository.saveReminder(reminder)}
+
+            val reminderNotification = ReminderDataItem(
+                title1,
+                description,
+                location,
+                latitude,
+                longitude
+            )
         }
     }
 
