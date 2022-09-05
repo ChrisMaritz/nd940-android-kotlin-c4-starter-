@@ -103,8 +103,15 @@ class SaveReminderFragment : BaseFragment() {
                 intent.action = ACTION_GEOFENCE_EVENT
                 PendingIntent.getBroadcast(requireContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
             }
+            val reminder = ReminderDTO(
+                title1,
+                description,
+                location,
+                latitude,
+                longitude)
+
             val geofence = Geofence.Builder()
-                .setRequestId(location)
+                .setRequestId(reminder.id)
                 .setCircularRegion(latitude!!,
                     longitude!!,
                     20.00f)
@@ -129,12 +136,6 @@ class SaveReminderFragment : BaseFragment() {
             val localDb = LocalDB
             val dao = localDb.createRemindersDao(requireContext())
             val dispatcher = Dispatchers.IO
-            val reminder = ReminderDTO(
-                title1,
-                description,
-                location,
-                latitude,
-                longitude)
             val remindersLocalRepository = RemindersLocalRepository(dao,dispatcher)
             CoroutineScope(Dispatchers.IO).launch {remindersLocalRepository.saveReminder(reminder)}
 
@@ -143,7 +144,7 @@ class SaveReminderFragment : BaseFragment() {
                 description,
                 location,
                 latitude,
-                longitude
+                longitude,
             )
         }
     }

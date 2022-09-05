@@ -38,14 +38,22 @@ class GeofenceTransitionsJobIntentService : JobIntentService(), CoroutineScope {
     override fun onHandleWork(intent: Intent) {
 
         val event = GeofencingEvent.fromIntent(intent)
+        val list = event.triggeringGeofences
+        Log.i("OnHandle", "FromIntent")
         //TODO: handle the geofencing transition events and
         // send a notification to the user when he enters the geofence area
-        if(event.geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER){
+        if(event.geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER || event.geofenceTransition == Geofence.GEOFENCE_TRANSITION_DWELL){
+            Log.i("OnHandle", "Enter")
             val id = when{
-                !event.triggeringGeofences.isEmpty() -> event.triggeringGeofences[0].requestId
+                !event.triggeringGeofences.isEmpty() -> {
+                    Log.i("OnHandle", "not empty")
+                    list[0].requestId
+                    }
                 else -> {Log.i("Trigger", "error")
-                    return}
+                    return
+                   }
             }
+            Log.i("OnHandle", id.toString())
             sendNotification(id)
         }
         //TODO call @sendNotification
@@ -53,15 +61,17 @@ class GeofenceTransitionsJobIntentService : JobIntentService(), CoroutineScope {
 
     //TODO: get the request id of the current geofence
     private fun sendNotification(id : String) {
-        var requestId = id
-
+        Log.i("Notify", "Begin" )
         //Get the local repository instance
         val remindersLocalRepository: ReminderDataSource by inject()
 //        Interaction to the repository has to be through a coroutine scope
         CoroutineScope(coroutineContext).launch(SupervisorJob()) {
             //get the reminder with the request id
-            val result = remindersLocalRepository.getReminder(requestId)
+            Log.i("Notify", "Coroutine" )
+            val result = remindersLocalRepository.getReminder(id)
+            Log.i("Notify", result.toString())
             if (result is Result.Success<ReminderDTO>) {
+                Log.i("Notify", "if" )
                 val reminderDTO = result.data
                 //send a notification to the user with the reminder details
                 sendNotification(
