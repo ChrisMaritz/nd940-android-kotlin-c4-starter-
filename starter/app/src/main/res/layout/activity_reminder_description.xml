@@ -42,7 +42,8 @@
             android:id="@+id/title_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{reminderDataItem.title}" />
+            android:textColor="@color/colorPrimaryDark"
+            android:text="@{reminderDataItem.title}"/>
 
         <TextView
             android:id="@+id/description_name"
@@ -55,7 +56,8 @@
             android:id="@+id/description_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{reminderDataItem.description}" />
+            android:text="@{reminderDataItem.description}"
+            android:textColor="@color/colorPrimaryDark"/>
 
         <TextView
             android:id="@+id/location_name"
@@ -68,7 +70,8 @@
             android:id="@+id/location_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{reminderDataItem.location}" />
+            android:text="@{reminderDataItem.location}"
+            android:textColor="@color/colorPrimaryDark"/>
 
         <TextView
             android:id="@+id/latitude_name"
@@ -81,7 +84,8 @@
             android:id="@+id/latitude_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{reminderDataItem.latitude.toString()}" />
+            android:text="@{reminderDataItem.latitude.toString()}"
+            android:textColor="@color/colorPrimaryDark"/>
 
         <TextView
             android:id="@+id/longitude_name"
@@ -94,7 +98,8 @@
             android:id="@+id/longitude_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{reminderDataItem.longitude.toString()}" />
+            android:text="@{reminderDataItem.longitude.toString()}"
+            android:textColor="@color/colorPrimaryDark"/>
 
     </LinearLayout>
 </layout>
