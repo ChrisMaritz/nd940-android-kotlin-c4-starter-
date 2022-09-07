@@ -72,30 +72,6 @@ class SaveReminderFragment : BaseFragment() {
 //            TODO: use the user entered reminder details to:
 //             1) add a geofencing request
 //             2) save the reminder to the local db
-            val geofenceList = mutableListOf<Geofence>()
-
-            geofenceList.add(Geofence.Builder()
-                // Set the request ID of the geofence. This is a string to identify this
-                // geofence.
-                .setRequestId(location)
-
-                // Set the circular region of this geofence.
-                .setCircularRegion(
-                    latitude!!,
-                    longitude!!,
-                    20.00f
-                )
-
-                // Set the expiration duration of the geofence. This geofence gets automatically
-                // removed after this period of time.
-                .setExpirationDuration(172800000)
-
-                // Set the transition types of interest. Alerts are only generated for these
-                // transition. We track entry and exit transitions in this sample.
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER or Geofence.GEOFENCE_TRANSITION_EXIT)
-
-                // Create the geofence.
-                .build())
             val geofencePendingIntent: PendingIntent by lazy {
                 val intent = Intent(requireContext(), GeofenceBroadcastReceiver::class.java)
                 // We use FLAG_UPDATE_CURRENT so that we get the same pending intent back when calling

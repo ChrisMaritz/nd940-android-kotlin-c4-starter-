@@ -35,6 +35,19 @@ class ReminderDescriptionActivity : AppCompatActivity() {
             R.layout.activity_reminder_description
         )
 
+
 //        TODO: Add the implementation of the reminder details
+        //Perhaps issue is here, need to implement here instead of other area
+        ifNull(intent)
+    }
+
+    fun ifNull(intent: Intent) {
+        if (intent != null) {
+            val reminderData: ReminderDataItem? =
+                intent.extras?.getSerializable(EXTRA_ReminderDataItem) as ReminderDataItem?
+            if (reminderData != null) {
+                binding.reminderDataItem = reminderData
+            }
+        }
     }
 }
