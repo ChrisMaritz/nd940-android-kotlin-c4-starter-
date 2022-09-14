@@ -32,10 +32,14 @@
             app:destination="@id/selectLocationFragment" />
         <action
             android:id="@+id/action_saveReminderFragment_self"
-            app:destination="@id/saveReminderFragment" />
+            app:destination="@id/saveReminderFragment"
+            app:popUpTo="@id/reminderListFragment" />
         <action
             android:id="@+id/action_saveReminderFragment_to_login"
             app:destination="@id/login" />
+        <action
+            android:id="@+id/action_saveReminderFragment_self2"
+            app:destination="@id/saveReminderFragment" />
     </fragment>
     <fragment
         android:id="@+id/selectLocationFragment"
@@ -44,6 +48,9 @@
         <action
             android:id="@+id/action_selectLocationFragment_to_login"
             app:destination="@id/login" />
+        <action
+            android:id="@+id/action_selectLocationFragment_to_saveReminderFragment"
+            app:popUpTo="@id/saveReminderFragment" />
     </fragment>
     <fragment
         android:id="@+id/login"

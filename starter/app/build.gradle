@@ -8,13 +8,13 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "29.0.2"
+    compileSdkVersion 31
+    buildToolsVersion "29.0.3"
 
     defaultConfig {
         applicationId "com.udacity.project4"
         minSdkVersion 28
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -55,22 +55,12 @@ dependencies {
     implementation "androidx.annotation:annotation:$androidXAnnotations"
 
     // Koin Core features
-    implementation "io.insert-koin:koin-core:3.2.0"
-    // Koin Test features
-    testImplementation "io.insert-koin:koin-test:3.2.0"
+    implementation "org.koin:koin-android:$koinVersion"
+    implementation "org.koin:koin-androidx-viewmodel:$koinVersion"
 
-    // Koin main features for Android
-    implementation "io.insert-koin:koin-android:3.2.0"
-    // No more koin-android-viewmodel, koin-android-scope, koin-android-fragment
-
-    // Java Compatibility
-    implementation "io.insert-koin:koin-android-compat:3.2.0"
-    // Jetpack WorkManager
-    implementation "io.insert-koin:koin-androidx-workmanager:3.2.0"
-    // Navigation Graph
-    implementation "io.insert-koin:koin-androidx-navigation:3.2.0"
     implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
 
+    implementation 'com.google.firebase:firebase-core:21.1.1'
 
     implementation("org.hamcrest:hamcrest:2.2")
     testImplementation("org.hamcrest:hamcrest:2.2")
@@ -89,6 +79,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-rc1'
     testImplementation project(path: ':app')
+    androidTestImplementation project(path: ':app')
     kapt "androidx.lifecycle:lifecycle-compiler:$archLifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-extensions:$archLifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$archLifecycleVersion"
@@ -164,3 +155,4 @@ dependencies {
 
 
 }
+apply plugin: 'com.google.gms.google-services'
