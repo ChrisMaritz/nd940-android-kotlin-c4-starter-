@@ -3,7 +3,6 @@ package com.udacity.project4.locationreminders.data.local
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.filters.MediumTest
@@ -22,6 +21,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.*
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
@@ -44,7 +44,7 @@ class RemindersLocalRepositoryTest {
     fun localReposAndDtaBase(){
 
         dtaBase = Room.inMemoryDatabaseBuilder(
-            getApplicationContext(),
+            ApplicationProvider.getApplicationContext(),
             RemindersDatabase::class.java
         )
             .allowMainThreadQueries()
@@ -60,20 +60,19 @@ class RemindersLocalRepositoryTest {
 
     @Test
     fun test(){
-        mainRule.runBlockingTest {
+        runBlockingTest {
 
-            val reminder = ReminderDTO("title", "description", "location", 0.0, 0.0)
+            val reminder = ReminderDTO("title", "description", "location", 0.0, 0.0, UUID.randomUUID().toString())
             localRepository.saveReminder(reminder)
 
-            val result = localRepository.getReminder(reminder.id)
+            val result = localRepository.getReminder(reminder.id) as Result.Success
 
-            result as Result.Success
-            assertThat(result.data.title, `is`(reminder.title))
-            assertThat(result.data.description, `is`(reminder.description))
-            assertThat(result.data.location, `is`(reminder.location))
-            assertThat(result.data.latitude, `is`(reminder.latitude))
-            assertThat(result.data.longitude, `is`(reminder.longitude))
-            assertThat(result.data.id, `is`(reminder.id))
+            assertThat(result?.data.title, `is`(reminder.title))
+            assertThat(result?.data.description, `is`(reminder.description))
+            assertThat(result?.data.location, `is`(reminder.location))
+            assertThat(result?.data.latitude, `is`(reminder.latitude))
+            assertThat(result?.data.longitude, `is`(reminder.longitude))
+            assertThat(result?.data.id, `is`(reminder.id))
 
         }
     }
