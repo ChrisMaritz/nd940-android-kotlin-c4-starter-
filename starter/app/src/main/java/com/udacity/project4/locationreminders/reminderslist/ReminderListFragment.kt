@@ -30,7 +30,7 @@ class ReminderListFragment : BaseFragment() {
     private lateinit var menu : Menu
     val signInIntent = AuthUI.getInstance()
         .createSignInIntentBuilder()
-        // ... options ...
+        .setIsSmartLockEnabled(false)
         .build();
     val signOutIntent = AuthUI.getInstance()
 
